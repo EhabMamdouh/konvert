@@ -3,6 +3,7 @@ const userRouter = express.Router();
 const { Project } = require("../models/project");
 const user = require("../middlewares/user");
 const admin = require("../middlewares/admin");
+const auth = require("../middlewares/auth");
 
 
 
@@ -25,7 +26,7 @@ userRouter.post("/api/add-project", user, async (req, res) => {
 });
 
 // Get all your projects
-userRouter.get("/api/get-projects", user, async (req, res) => {
+userRouter.get("/api/get-projects", admin, async (req, res) => {
   try {
     const projects = await Project.find({});
     res.json(projects);
@@ -33,6 +34,16 @@ userRouter.get("/api/get-projects", user, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+// Get projects for me
+userRouter.get("/api/projects/me", auth, async (req, res) => {
+  try {
+    const projects = await Project.find({ userId: req.user });
+    res.json(projects);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 
 // Delete the projects
 userRouter.delete("/api/delete-project", user, async (req, res) => {
