@@ -22,7 +22,7 @@ const upload = multer({ storage: storage });
 
 
 // Add project video
-projectVideoRouter.post('/api/add-project-video', upload.single('video'), async (req, res) => {
+projectVideoRouter.post('/api/add-project-video', user, upload.single('video'), async (req, res) => {
   if (!req.file) {
     return res.status(400).send('No video file uploaded.');
   }
@@ -40,7 +40,7 @@ projectVideoRouter.post('/api/add-project-video', upload.single('video'), async 
         description: req.body.description,
         quality: req.body.quality,
         userId: req.body.userId,
-        videoUrl: result.secure_url,
+        video: result.secure_url,
       });
       await newVideo.save();
       // Respond with a success message

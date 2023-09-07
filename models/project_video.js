@@ -12,7 +12,7 @@ const projectVideoSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
-  videoUrl: {
+  video: {
     type: String,
     required: true,
   },

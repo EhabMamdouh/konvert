@@ -35,24 +35,6 @@ mongoose
     console.log(e);
   });
 
-// Serve the HTML form for video upload
-app.get('/', (req, res) => {
-  res.send(`
-    <html>
-      <body>
-        <h1>Video Upload</h1>
-        <form method="POST" action="/api/add-project-video" enctype="multipart/form-data">
-          <input type="file" name="video" accept="video/*">
-          <input type="text" name="name" placeholder="name">
-          <input type="text" name="description" placeholder="description">
-          <input type="text" name="quality" placeholder="quality">
-          <input type="text" name="userId" placeholder="userId">
-          <button type="submit">Upload Video</button>
-        </form>
-      </body>
-    </html>
-  `);
-});
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`connected at port ${PORT}`);
