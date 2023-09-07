@@ -97,7 +97,7 @@ projectVideoRouter.put("/api/change-project-video-status/:id", admin, async (req
       },
       { new: true }
     );
-    project = await ProjectVideo.save();
+    project = await project.save();
     res.json(project);
   } catch (e) {
     res.status(500).json({ error: e.message });
