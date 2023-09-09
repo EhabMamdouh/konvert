@@ -22,13 +22,20 @@ const upload = multer({ storage: storage });
 
 
 // Add project video
-projectVideoRouter.post('/api/add-project-video', user, async (req, res, next) => {
-  const newVideo = new ProjectVideo({ userId: req.user.id, ...req.body });
+userRouter.post("/api/add-project-video", user, async (req, res) => {
   try {
-    const savedVideo = await newVideo.save();
-    res.status(200).json(savedVideo);
-  } catch (err) {
-    next(err);
+    const { userId, name, description, video, quality } = req.body;
+    let project = new Project({
+      userId,
+      name,
+      description,
+      video,
+      quality,
+    });
+    project = await project.save();
+    res.json(project);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
 });
 // projectVideoRouter.post('/api/add-project-video', user, upload.single('video'), async (req, res) => {
