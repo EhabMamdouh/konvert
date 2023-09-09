@@ -22,7 +22,7 @@ const auth = require("../middlewares/auth");
 
 
 // Add project video
-userRouter.post("/api/add-project-video", user, async (req, res) => {
+projectVideoRouter.post("/api/add-project-video", user, async (req, res) => {
   try {
     const { userId, name, description, video, quality } = req.body;
     let project = new Project({
