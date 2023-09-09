@@ -22,35 +22,44 @@ const upload = multer({ storage: storage });
 
 
 // Add project video
-projectVideoRouter.post('/api/add-project-video', user, upload.single('video'), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('No video file uploaded.');
-  }
-  const buffer = req.file.buffer;
+projectVideoRouter.post('/api/add-project-video', user, async (req, res, next) => {
+  const newVideo = new ProjectVideo({ userId: req.user.id, ...req.body });
   try {
-    // Upload the video to Cloudinary
-    cloudinary.uploader.upload_stream({ resource_type: 'video' }, async (error, result) => {
-      if (error) {
-        console.error('Error uploading video to Cloudinary:', error);
-        return res.status(500).send('Error uploading video to Cloudinary.');
-      }
-      // Respond with the Cloudinary response, which includes the video URL
-      const newVideo = new ProjectVideo({
-        name: req.body.name,
-        description: req.body.description,
-        quality: req.body.quality,
-        userId: req.body.userId,
-        video: result.secure_url,
-      });
-      await newVideo.save();
-      // Respond with a success message
-      return res.json({ message: 'Video uploaded and saved to the database.' });
-    }).end(buffer);
-  } catch (error) {
-    console.error('Error uploading video to Cloudinary or saving to the database:', error);
-    return res.status(500).json({ message: 'Error uploading video or saving to the database.' });
+    const savedVideo = await newVideo.save();
+    res.status(200).json(savedVideo);
+  } catch (err) {
+    next(err);
   }
 });
+// projectVideoRouter.post('/api/add-project-video', user, upload.single('video'), async (req, res) => {
+//   if (!req.file) {
+//     return res.status(400).send('No video file uploaded.');
+//   }
+//   const buffer = req.file.buffer;
+//   try {
+//     // Upload the video to Cloudinary
+//     cloudinary.uploader.upload_stream({ resource_type: 'video' }, async (error, result) => {
+//       if (error) {
+//         console.error('Error uploading video to Cloudinary:', error);
+//         return res.status(500).send('Error uploading video to Cloudinary.');
+//       }
+//       // Respond with the Cloudinary response, which includes the video URL
+//       const newVideo = new ProjectVideo({
+//         name: req.body.name,
+//         description: req.body.description,
+//         quality: req.body.quality,
+//         userId: req.body.userId,
+//         video: result.secure_url,
+//       });
+//       await newVideo.save();
+//       // Respond with a success message
+//       return res.json({ message: 'Video uploaded and saved to the database.' });
+//     }).end(buffer);
+//   } catch (error) {
+//     console.error('Error uploading video to Cloudinary or saving to the database:', error);
+//     return res.status(500).json({ message: 'Error uploading video or saving to the database.' });
+//   }
+// });
 
 // Get all your projects-video
 
