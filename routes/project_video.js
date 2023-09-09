@@ -10,15 +10,15 @@ const auth = require("../middlewares/auth");
 
 
 // Configure Cloudinary with your credentials
-cloudinary.config({
-  cloud_name: 'dzpn0qrcd',
-  api_key: '429727354892827',
-  api_secret: 'jnxRobXP6l03X__RvKaHxHK7i1s',
-});
+// cloudinary.config({
+//   cloud_name: 'dzpn0qrcd',
+//   api_key: '429727354892827',
+//   api_secret: 'jnxRobXP6l03X__RvKaHxHK7i1s',
+// });
 
-// Set up multer for file uploads
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+// // Set up multer for file uploads
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage: storage });
 
 
 // Add project video
